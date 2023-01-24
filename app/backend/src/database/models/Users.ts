@@ -1,4 +1,4 @@
-import { Model, INTEGER, STRING } from 'sequelize';// fonte course tipagem estática e genérics
+import { Model, INTEGER, STRING } from 'sequelize';
 import db from '.';
 
 class User extends Model {
@@ -8,37 +8,33 @@ class User extends Model {
   declare email: string;
   declare password: string;
 }
-
 User.init({
   id: {
     type: INTEGER,
-    allowNull: false,
-    primaryKey: true,
     autoIncrement: true,
+    primaryKey: true,
   },
-  text: {
-    type: STRING(255),
+  username: {
+    type: STRING,
     allowNull: false,
   },
-  author: {
-    type: STRING(100),
+  role: {
+    type: STRING,
     allowNull: false,
   },
-  bookId: {
-    type: INTEGER,
+  email: {
+    type: STRING,
+    allowNull: false,
+  },
+  password: {
+    type: STRING,
     allowNull: false,
   },
 }, {
-  // ... Outras configs
   underscored: true,
   sequelize: db,
-  modelName: 'comments',
+  modelName: 'User',
   timestamps: false,
+  tableName: 'users',
 });
-
-/**
-  * `Workaround` para aplicar as associations em TS:
-  * Associations 1:N devem ficar em uma das instâncias de modelo
-  * */
-
 export default User;
