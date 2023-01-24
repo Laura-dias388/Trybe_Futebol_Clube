@@ -4,7 +4,7 @@ import User from '../database/models/Users';
 import { ServiceLogin, TypeLogin } from '../types/index';
 import { createToken, validateToken } from '../auth/validateToken';
 
-export default class LoginService {
+export default abstract class LoginService {
   static async functionLogin(data: ServiceLogin): Promise<TypeLogin> {
     const { email, password } = data;
     const user = await User.findOne({ where: { email } });
@@ -22,6 +22,7 @@ export default class LoginService {
     const obj = validateToken(token) as JwtPayload;
     if (!obj) return { type: 'error', message: 'Token inválido' };
     const { role } = obj.data;
+    console.log('testessssss');
     return { type: null, message: role };
   }
 }

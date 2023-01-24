@@ -12,7 +12,7 @@ const secret = process.env.JWT_SECRET || 'seusecretdetoken';
 
 const jwtConfig: SignOptions = {
   algorithm: 'HS256',
-  expiresIn: '1d',
+  expiresIn: '3d',
 };
 
 export const createToken = (loginWithoutPassword: TypeToken) => {

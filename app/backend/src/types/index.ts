@@ -14,3 +14,8 @@ export interface TypeLogin {
   type: string | null,
   message: string,
 }
+
+export type TypeTeams = {
+  id?: number,
+  teamName: string,
+};
