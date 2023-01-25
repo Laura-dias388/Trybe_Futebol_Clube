@@ -18,11 +18,22 @@ export default class MatchesServices {
     return getMatches;
   }
 
-  static async functionGetMatchById(id: number) {
-    const getMatchById = await Match.findByPk(id);
-    if (!getMatchById) {
-      return { type: null, message: getMatchById };
-    }
-    return { type: 'success', message: getMatchById };
+  static async functionGetMatchByQueries(q: string) {
+    const inProgress = q === 'true';
+    if (typeof inProgress !== 'boolean') return { type: 'error', message: 'false' };
+    const getMatchByQuery = await Match.findAll({
+      where: { inProgress },
+      include: [
+        { model: Team,
+          as: 'homeTeam',
+          attributes: { exclude: ['id'] },
+        },
+        { model: Team,
+          as: 'awayTeam',
+          attributes: { exclude: ['id'] },
+        },
+      ],
+    });
+    return getMatchByQuery;
   }
 }

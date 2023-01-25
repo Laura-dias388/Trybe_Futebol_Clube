@@ -28,13 +28,13 @@ Team.init({
 
 Match.belongsTo(
   Team,
-  { foreignKey: 'awayTeamId',
-    as: 'awayTeam' },
+  { foreignKey: 'homeTeamId',
+    as: 'homeTeam' },
 );
 Match.belongsTo(
   Team,
-  { foreignKey: 'homeTeamId',
-    as: 'homeTeam' },
+  { foreignKey: 'awayTeamId',
+    as: 'awayTeam' },
 );
 /**
   * `Workaround` para aplicar as associations em TS:

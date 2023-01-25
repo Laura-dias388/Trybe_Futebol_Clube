@@ -1,4 +1,4 @@
-import { Model, BOOLEAN, INTEGER } from 'sequelize';
+import { Model, INTEGER, BOOLEAN } from 'sequelize';
 import db from '.';
 
 class Match extends Model {
@@ -43,9 +43,5 @@ Match.init({
   timestamps: false,
   tableName: 'matches',
 });
-/**
-  * `Workaround` para aplicar as associations em TS:
-  * Associations 1:N devem ficar em uma das instâncias de modelo
-  * */
 
 export default Match;

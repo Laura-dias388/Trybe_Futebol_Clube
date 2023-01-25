@@ -8,9 +8,11 @@ export default abstract class LoginService {
   static async functionLogin(data: ServiceLogin): Promise<TypeLogin> {
     const { email, password } = data;
     const user = await User.findOne({ where: { email } });
+
     if (!user) return { type: 'error', message: 'Incorrect email or password' };
     const { dataValues } = user;
     const passwordIsValid = bcrypt.compareSync(password, dataValues.password);
+
     if (!passwordIsValid) return { type: 'error', message: 'Incorrect email or password' };
     // delete dataValues.password;
     const { password: _, ...everythingWithoutPassowd } = dataValues;
