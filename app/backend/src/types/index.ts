@@ -19,3 +19,12 @@ export type TypeTeams = {
   id?: number,
   teamName: string,
 };
+
+export type TypeMatches = {
+  id?: number,
+  homeTeamId: number,
+  homeTeamGoals: number,
+  awayTeamId: number,
+  inProgress: boolean,
+  date: string,
+};

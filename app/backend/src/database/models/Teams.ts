@@ -25,6 +25,17 @@ Team.init({
   tableName: 'teams',
 
 });
+
+Match.belongsTo(
+  Team,
+  { foreignKey: 'awayTeamId',
+    as: 'awayTeam' },
+);
+Match.belongsTo(
+  Team,
+  { foreignKey: 'homeTeamId',
+    as: 'homeTeam' },
+);
 /**
   * `Workaround` para aplicar as associations em TS:
   * Associations 1:N devem ficar em uma das instâncias de modelo

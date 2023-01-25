@@ -41,7 +41,7 @@ Match.init({
   sequelize: db,
   modelName: 'Match',
   timestamps: false,
-  tableName: 'matchs',
+  tableName: 'matches',
 });
 /**
   * `Workaround` para aplicar as associations em TS:
