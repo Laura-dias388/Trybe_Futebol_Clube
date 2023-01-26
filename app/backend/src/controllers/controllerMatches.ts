@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-// import { TypeMatchesWithTeams } from '../types';
 import MatchesService from '../services/serviceMatches';
 
 export default class MatchesController {
@@ -22,19 +21,13 @@ export default class MatchesController {
     return res.status(200).json(get);
   }
 
-  static async functionPostMatch(req: Request, res: Response): Promise<Response | void> {
-    const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = req.body;
-    const database = {
-      homeTeamId,
-      awayTeamId,
-      homeTeamGoals,
-      awayTeamGoals,
-    };
-    const { type, message } = await MatchesService.functionPostMatch(database);
-    if (!type) {
-      res.status(404).json({ message });
-    } else {
-      res.status(200).json(message);
+  static async functionGetMatchByPost(req: Request, res: Response) {
+    const result = await MatchesService.functionGetMatchByPost(req.body);
+    if (result.type === 'error') {
+      return res.status(404).json({ message: result.message });
     }
+    return res.status(201).json(result.message);
   }
 }
+
+// Requisito desenvolvido com ajuda de Luíde Pires T-23 Tribo A;

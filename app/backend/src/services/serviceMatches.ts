@@ -38,13 +38,15 @@ export default class MatchesServices {
     return getMatchByQuery;
   }
 
-  static async functionPostMatch(data: TypeMatchesWithTeams)
-    : Promise<{ type: string, message: string | Match }> {
-    const { awayTeamId, homeTeamId } = data;
-    const getMatch = await Match.findByPk(awayTeamId);
-    const getMatch2 = await Match.findByPk(homeTeamId);
-    if (!getMatch || !getMatch2) return { type: 'error', message: 'false' };
-    const postMatch = await Match.create({ ...data, inProgress: true });
-    return { type: 'error', message: postMatch };
+  static async functionGetMatchByPost(body: TypeMatchesWithTeams) {
+    const { homeTeamId, awayTeamId } = body;
+    const homeTeam = await Match.findByPk(homeTeamId);
+    const awayTeam = await Match.findByPk(awayTeamId);
+    if (!homeTeam || !awayTeam) {
+      return { type: 'error', message: 'There is no team with such id!' };
+    }
+    const { dataValues } = await Match.create({ ...body, inProgress: true });
+    return { type: null, message: dataValues };
   }
 }
+// Requisito desenvolvido com ajuda de Luíde Pires T-23 Tribo A;
