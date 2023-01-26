@@ -1,5 +1,6 @@
 import Team from '../database/models/Teams';
 import Match from '../database/models/Matches';
+import { TypeMatchesWithTeams } from '../types';
 
 export default class MatchesServices {
   static async functionGetMatches() {
@@ -35,5 +36,15 @@ export default class MatchesServices {
       ],
     });
     return getMatchByQuery;
+  }
+
+  static async functionPostMatch(data: TypeMatchesWithTeams)
+    : Promise<{ type: string, message: string | Match }> {
+    const { awayTeamId, homeTeamId } = data;
+    const getMatch = await Match.findByPk(awayTeamId);
+    const getMatch2 = await Match.findByPk(homeTeamId);
+    if (!getMatch || !getMatch2) return { type: 'error', message: 'false' };
+    const postMatch = await Match.create({ ...data, inProgress: true });
+    return { type: 'error', message: postMatch };
   }
 }

@@ -28,3 +28,10 @@ export type TypeMatches = {
   inProgress: boolean,
   date: string,
 };
+
+export type TypeMatchesWithTeams = {
+  homeTeamId: number,
+  awayTeamId: number,
+  homeTeamGoals: number,
+  awayTeamGoals: number,
+};
