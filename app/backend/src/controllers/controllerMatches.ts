@@ -5,7 +5,6 @@ export default abstract class MatchesController {
   static async functionGetMatches(req: Request, res: Response) {
     if (req.query.inProgress) return MatchesController.getMatchByQuery(req, res);
     const get = await MatchesService.functionGetMatches();
-    console.log(get);
     return res.status(200).json(get);
   }
 

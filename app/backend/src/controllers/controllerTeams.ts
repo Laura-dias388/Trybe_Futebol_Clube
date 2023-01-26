@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import TeamsService from '../services/serviceTeams';
 
 export default class TeamsController {
-  static async functionGetTeams(_req: Request, res: Response) {
+  static async functionGetTeams(_req: Request, res: Response): Promise<Response> {
     const getTeams = await TeamsService.functionGetTeams();
     if (!getTeams) {
       return res.status(404).json({ message: 'No teams found' });

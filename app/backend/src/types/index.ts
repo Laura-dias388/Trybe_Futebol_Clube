@@ -35,3 +35,16 @@ export type TypeMatchesWithTeams = {
   homeTeamGoals: number,
   awayTeamGoals: number,
 };
+
+export type TesteTeams = {
+  id?: number,
+  teamName: string,
+};
+
+export type UserToken = {
+  id: number;
+  email: string;
+  username: string;
+  role: string;
+  password: string;
+};
