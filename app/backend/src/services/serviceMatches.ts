@@ -2,7 +2,7 @@ import Team from '../database/models/Teams';
 import Match from '../database/models/Matches';
 import { TypeMatchesWithTeams } from '../types';
 
-export default class MatchesServices {
+export default abstract class MatchesServices {
   static async functionGetMatches() {
     const getMatches = await Match.findAll({
       include: [
@@ -47,6 +47,22 @@ export default class MatchesServices {
     }
     const { dataValues } = await Match.create({ ...body, inProgress: true });
     return { type: null, message: dataValues };
+  }
+
+  static async functionForMatchByFinish(id: number) {
+    const [getMatchById] = await Match.update({ inProgress: false }, { where: { id } });
+    if (!getMatchById) {
+      return { type: 'error', message: 'This match is already over' };
+    }
+    return { type: null, message: 'Finished' };
+  }
+
+  static async functionForMatchByUpdate(id: number, body: TypeMatchesWithTeams) {
+    const updatePatch = await Match.update({ ...body }, { where: { id } });
+    if (updatePatch[0] === 0) {
+      return { type: 'error', message: 'This match is already over' };
+    }
+    return { type: null, message: 'Updated' };
   }
 }
 // Requisito desenvolvido com ajuda de Luíde Pires T-23 Tribo A;

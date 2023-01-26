@@ -3,7 +3,7 @@ import { validateToken } from '../auth/validateToken';
 
 const validateTokenMatches = (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
-  if (authorization !== process.env.TOKEN) {
+  if (!authorization) {
     return res.status(401).json({ message: 'Token not found' });
   }
   const verifyTokenForMatches = validateToken(authorization as string);
