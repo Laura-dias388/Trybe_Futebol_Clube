@@ -25,6 +25,9 @@ const noEmail = {
   password: 'secret_admin',
 }
 
+const noPassword = {
+  email: 'admin@admin.com',
+}
 
 export {
   user,
@@ -32,4 +35,5 @@ export {
   invalidPassword,
   validUser,
   noEmail,
+  noPassword,
 };

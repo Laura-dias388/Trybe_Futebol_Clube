@@ -13,6 +13,7 @@ import {
   invalidPassword,
   validUser,
   noEmail,
+  noPassword,
 } from './mock/TeamsMockTest';
 import User from '../database/models/Users';
 import { ServiceLogin } from '../types';
@@ -104,6 +105,18 @@ describe("Testa a rota POST para login.", () => {
 
     it("Testa se retorna uma menssagem de erro quando algum campo não é preenchido.", async () => {
       const result = await chai.request(app).post('/login').send(noEmail);
+
+      expect(result.body).to.deep.equal({ message: 'All fields must be filled' });
+    });
+
+    it("Testa se retorna um status 400 quando password não é passado.", async () => {
+      const result = await chai.request(app).post('/login').send(noPassword);
+
+      expect(result.status).to.equal(400);
+    });
+
+    it("Testa se retorna uma menssagem de erro.", async () => {
+      const result = await chai.request(app).post('/login').send(noPassword);
 
       expect(result.body).to.deep.equal({ message: 'All fields must be filled' });
     });
