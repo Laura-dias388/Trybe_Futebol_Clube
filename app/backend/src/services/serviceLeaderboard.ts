@@ -22,27 +22,9 @@ const totalHomeTeamLosses = (a: number, c: Match): number => {
   if (c.homeTeamGoals < c.awayTeamGoals) return a + 1;
   return a;
 };
+
 const homeGoals = (a: number, c: Match): number => a + c.homeTeamGoals;
 const homeGoalsAway = (a: number, c: Match): number => a + c.awayTeamGoals;
-const totalAwaySumOfHome = (a: number, c: Match): number => {
-  if (c.homeTeamGoals < c.awayTeamGoals) return a + 3;
-  if (c.homeTeamGoals === c.awayTeamGoals) return a + 1;
-  return a;
-};
-
-const awayWins = (a: number, c: Match): number => {
-  if (c.homeTeamGoals < c.awayTeamGoals) return a + 1;
-  return a;
-};
-
-const awayGamesLost = (a: number, c: Match): number => {
-  if (c.homeTeamGoals > c.awayTeamGoals) return a + 1;
-  return a;
-};
-
-const goalsAwayFromHome = (a: number, c: Match): number => a + c.awayTeamGoals;
-
-const awayGoals = (a: number, c: Match): number => a + c.homeTeamGoals;
 
 export default class LeaderboardService {
   static async matchesForLeaderboards(id:number): Promise<Match[]> {
@@ -90,33 +72,5 @@ export default class LeaderboardService {
       ],
     });
     return allMatches;
-  }
-
-  static async getAwayTeams(): Promise<Match[][]> {
-    const teams = await Team.findAll();
-    if (teams.length === 0) return [];
-    const resp = teams.map((team) => LeaderboardService.getMatchesByAwayTeam(team.id));
-    const result = await Promise.all(resp);
-    return result;
-  }
-
-  static async awayTeams(): Promise<TypeLeaderboard[]> {
-    const allTeams = await Team.findAll();
-    if (allTeams.length === 0) return [];
-    const data = await LeaderboardService.getAwayTeams();
-    const answerArray = data.map((team, i) => ({
-      name: allTeams[i].teamName,
-      totalPoints: team.reduce(totalAwaySumOfHome, 0),
-      totalGames: team.length,
-      totalVictories: team.reduce(awayWins, 0),
-      totalDraws: team.reduce(totalTies, 0),
-      totalLosses: team.reduce(awayGamesLost, 0),
-      goalsFavor: team.reduce(goalsAwayFromHome, 0),
-      goalsOwn: team.reduce(awayGoals, 0),
-      goalsBalance: team.reduce(goalsAwayFromHome, 0) - team.reduce(awayGoals, 0),
-      efficiency: ((team.reduce(totalAwaySumOfHome, 0) / (team.length * 3)) * 100).toFixed(2),
-    }));
-
-    return answerArray;
   }
 }

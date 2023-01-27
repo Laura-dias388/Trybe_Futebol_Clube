@@ -12,14 +12,4 @@ export default class LeaderboardController {
     const resultComplet = result(resp as TypeLeaderboardWithTeams[]);
     return res.status(200).json(resultComplet);
   }
-
-  static async awayTeams(req: Request, res: Response): Promise<Response> {
-    const resp = await LeaderboardService.awayTeams();
-    if (!resp) {
-      return res.status(404).json({ type: 'error', message: 'No matches for these teams.' });
-    }
-    const resultComplet = result(resp as TypeLeaderboardWithTeams[]);
-
-    return res.status(200).json(resultComplet);
-  }
 }
