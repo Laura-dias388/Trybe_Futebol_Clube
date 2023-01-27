@@ -14,7 +14,7 @@ import {
   validUser,
   noEmail,
   noPassword,
-} from './mock/TeamsMockTest';
+} from './mock/login.mock';
 import User from '../database/models/Users';
 import { ServiceLogin } from '../types';
 
@@ -24,7 +24,7 @@ const { expect } = chai;
 const VALIDATION_TOKEN = 'meu_token_valido';
 
 describe("Testa a rota POST para login.", () => {
-  describe("Testar se recebe status 400", () => {
+  describe("Testa se recebe status 400", () => {
     it("Retorna um status 400", async () => {
       const result = await chai.request(app).post('/login');
 
@@ -38,7 +38,7 @@ describe("Testa a rota POST para login.", () => {
     });
   });
 
-  describe("Testa se retorna um errro quando recebe um email inválido.", () => {
+  describe("Testa se retorna um erro quando recebe um email inválido.", () => {
     beforeEach(async () => sinon.stub(User,
       'findOne').resolves(null));
     afterEach(() => sinon.restore());
@@ -123,3 +123,60 @@ describe("Testa a rota POST para login.", () => {
   });
 });
 
+describe("Testa a rota GET para /login/validate", () => {
+  describe("Se funciona corretamente", () => {
+    beforeEach(() => {
+      sinon.stub(User, 'findByPk').resolves({ id: 1 } as ServiceLogin | any);
+    });
+    afterEach(() => sinon.restore());
+
+    it("Testa se retorna um status 401", async () => {
+      const resp = await chai.request(app)
+      .get('/login/validate').set('Authorization', VALIDATION_TOKEN);
+
+      expect(resp.status).to.equal(401);
+    });
+
+    it("Testa se etorna um role do usuário logado e uma mensagem", async () => {
+      const resp = await chai.request(app)
+      .get('/login/validate').set('Authorization', VALIDATION_TOKEN);
+
+      expect(resp.body).to.deep.equal({ message: 'Token must be a valid token' });
+    });
+  });
+
+describe("Testa se retorna um status 200", () => {
+  beforeEach(() => {
+    sinon.stub(User, 'findByPk').resolves({ id: 1, role: 'admin' } as ServiceLogin | any);
+  });
+  afterEach(() => sinon.restore());
+
+  it("Testa se retorna um status 200", async () => {
+    const resp = await chai.request(app)
+    .get('/login/validate').set('Authorization', VALIDATION_TOKEN);
+
+    expect(resp.status).to.equal(200);
+  });
+
+  it("Testa se retorna um role do usuário logado e uma mensagem", async () => {
+    const resp = await chai.request(app)
+    .get('/login/validate').set('Authorization', VALIDATION_TOKEN);
+
+    expect(resp.body).to.deep.equal({ role: 'admin', message: 'Token is valid' });
+  });
+}),
+
+  describe("Testa se retorna um status 401", () => {
+    beforeEach(() => {
+      sinon.stub(User, 'findByPk').resolves(null);
+    });
+    afterEach(() => sinon.restore());
+
+    it("Testa se retorna um status 401", async () => {
+      const resp = await chai.request(app)
+      .get('/login/validate').set('Authorization', VALIDATION_TOKEN);
+
+      expect(resp.status).to.equal(401);
+    });
+  });
+});
