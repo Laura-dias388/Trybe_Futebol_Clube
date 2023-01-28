@@ -64,3 +64,7 @@ export interface TypeLeaderboardWithTeams extends TypeLeaderboard {
   goalsBalance: number,
   efficiency: string,
 }
+
+export type TypeError = {
+  error: string,
+};
